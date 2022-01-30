@@ -12,7 +12,7 @@ void Game::Init()
 {
 }
 
-void Game::ProcessInput(GLfloat detalTime)
+void Game::ProcessInput(GLfloat deltaTime)
 {
 }
 

@@ -1,4 +1,24 @@
 ﻿#include "ResourceManager.h"
+// 定义静态变量
+std::map<std::string, class Texture2D*> ResourceManager::textures = {};
+std::map<std::string, class ShaderManager*> ResourceManager::shaders = {};
+
+void ResourceManager::Clear()
+{
+	for (auto it : textures)
+	{
+		glDeleteTextures(1,&it.second->ID);
+		delete(it.second);
+	}
+	textures.clear();
+
+	for (auto it : shaders)
+	{
+		glDeleteProgram(it.second->ID);
+		delete(it.second);
+	}
+	shaders.clear();
+}
 
 Texture2D* ResourceManager::LoadTexture(std::string textureName, const std::string& texturePath, bool flipImage)
 {
@@ -27,6 +47,7 @@ Texture2D* ResourceManager::LoadTexture(std::string textureName, const std::stri
 	stbi_image_free(data);
 	return texture2D;
 }
+
 
 ShaderManager* ResourceManager::LoadShader(const std::string shaderName, const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath)
 {

@@ -17,7 +17,7 @@ public:
 
 	// 游戏循环
 	// -----------------------------------------------
-	void ProcessInput(GLfloat detalTime); // 玩家输入
+	void ProcessInput(GLfloat deltaTime); // 玩家输入
 
 	void Update(GLfloat detalTime); // 逻辑循环
 

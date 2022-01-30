@@ -17,6 +17,7 @@ public:
 	static std::map<std::string,class ShaderManager*> shaders;
 
 public:
+	static void Clear();
 	static Texture2D* LoadTexture(std::string textureName, const std::string& texturePath, bool flipImage =false);
 	static ShaderManager* LoadShader(const std::string shaderName, const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath);
 	static Texture2D* GetTexture(const std::string textureName);
@@ -25,6 +26,3 @@ private:
 	static const char* LoadShaderDataFromFile(const std::string& filePath);
 };
 
-// 定义静态变量
-std::map<std::string, class Texture2D*> ResourceManager::textures = {};
-std::map<std::string, class ShaderManager*> ResourceManager::shaders = {};
