@@ -1,4 +1,5 @@
 ﻿#include "ResourceManager.h"
+
 // 定义静态变量
 std::map<std::string, class Texture2D*> ResourceManager::textures = {};
 std::map<std::string, class ShaderManager*> ResourceManager::shaders = {};
@@ -34,7 +35,7 @@ Texture2D* ResourceManager::LoadTexture(const char* textureName, const char* tex
 	unsigned char* data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
 	if (data == NULL)
 	{
-		std::cout << "ERROR::LOADTEXTURE::Failed to load texture" << std::endl;
+		PrintError(ET_READFILE, "Failed to load texture");
 		stbi_image_free(data);
 		return nullptr;
 	}
@@ -88,12 +89,17 @@ ShaderManager* ResourceManager::LoadShaderDataFromFile(const char* vertexPath, c
 	std::string vsShaderCode;
 	std::string fsShaderCode;
 	std::string geShaderCode;
+	std::ifstream vertexShaderFile;
+	std::ifstream fragmentShaderFile;
 
+	// 抛出异常
+	vertexShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	fragmentShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	try
 	{
 		// 打开文件
-		std::ifstream vertexShaderFile(vertexPath);
-		std::ifstream fragmentShaderFile(fragmentPath);
+		vertexShaderFile.open(vertexPath);
+		fragmentShaderFile.open(fragmentPath);
 		std::stringstream vShaderStream, fShaderStream;
 		
 		// 读取文件buffer
@@ -120,7 +126,7 @@ ShaderManager* ResourceManager::LoadShaderDataFromFile(const char* vertexPath, c
 	}
 	catch (std::exception e)
 	{
-		std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
+		PrintError(ET_READFILE, "Failed to read shader files");
 	}
 
 	// 2.创建shader

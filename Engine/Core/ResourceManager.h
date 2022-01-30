@@ -9,6 +9,7 @@
 #include "Texture2D.h"
 #include "ShaderManager.h"
 #include "stb_image/stb_image.h"
+#include "CommonTool.h"
 
 class ResourceManager
 {
