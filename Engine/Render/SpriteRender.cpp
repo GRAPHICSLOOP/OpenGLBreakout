@@ -1,16 +1,16 @@
-﻿#include "Sprite.h"
+﻿#include "SpriteRender.h"
 
-Sprite::Sprite()
+SpriteRender::SpriteRender()
 {
     InitRenderData();
 }
 
-Sprite::~Sprite()
+SpriteRender::~SpriteRender()
 {
     glDeleteVertexArrays(1,&quadVAO);
 }
 
-void Sprite::Draw(ShaderManager* shader, Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+void SpriteRender::Draw(ShaderManager* shader, Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::vec2 size, glm::vec4 color)
 {
     shader->use();
 
@@ -32,7 +32,7 @@ void Sprite::Draw(ShaderManager* shader, Texture2D* texture, GLfloat rotate, glm
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Sprite::InitRenderData()
+void SpriteRender::InitRenderData()
 {
     GLfloat vertices[] = {
         // Pos      // Tex

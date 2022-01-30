@@ -3,14 +3,14 @@
 
 #include "../Core/ShaderManager.h"
 #include "../Core/Texture2D.h"
-class Sprite
+class SpriteRender
 {
 private:
 	GLuint quadVAO;
 
 public:
-	Sprite();
-	~Sprite();
+	SpriteRender();
+	~SpriteRender();
 	/** 
 	 * 绘制.
 	 * 

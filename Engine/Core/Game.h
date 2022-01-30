@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "../Render/Sprite.h"
+#include "../Render/SpriteRender.h"
 #include "ResourceManager.h"
 
 
@@ -9,7 +9,7 @@ class Game
 {
 public:
 	GLuint screenWidth, screenHeight;
-	Sprite* spriteObj;
+	SpriteRender SpriteRender;
 
 public:
 
