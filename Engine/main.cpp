@@ -16,7 +16,6 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 // 回调-鼠标位置改动
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
-Game breakOut(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main()
 {
@@ -31,9 +30,9 @@ int main()
 
 	// 初始化
 	// -----------------------------------------------
-	breakOut.Init();
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	Game breakOut(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH); // 该游戏不需要深度
 
 	// 游戏循环

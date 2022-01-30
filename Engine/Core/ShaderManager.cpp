@@ -67,7 +67,7 @@ void ShaderManager::SetVec3(const char* name, glm::vec3 value) const
 
 void ShaderManager::SetVec4(const char* name, glm::vec4 value) const
 {
-	glUniform3fv(glGetUniformLocation(ID, name), 1, glm::value_ptr(value));
+	glUniform4fv(glGetUniformLocation(ID, name), 1, glm::value_ptr(value));
 }
 
 void ShaderManager::SetVec2(const char* name, glm::vec2 value) const
@@ -83,7 +83,7 @@ void ShaderManager::SetMatrix(const char* name, glm::mat4& mat)
 GLuint ShaderManager::CompileShader(const char* shaderSource, GLenum type)
 {
 	// 编译shader
-	unsigned int shader;
+	GLuint shader;
 	int success;
 	char infoLog[512];
 

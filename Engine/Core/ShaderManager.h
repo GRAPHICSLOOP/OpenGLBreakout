@@ -24,6 +24,8 @@ public:
 	void use();
 
 	// uniform工具函数
+	// -------------------------------------------
+
 	void SetBool(const char* name, bool value) const;
 	void SetInt(const char* name, int value) const;
 	void SetFloat(const char* name, float value) const;
@@ -34,6 +36,12 @@ public:
 
 private:
 
-	// 编译shader
+	/**
+	 * 编译shader.
+	 * 
+	 * \param shaderSource shader代码
+	 * \param type shader类型
+	 * \return 
+	 */
 	GLuint CompileShader(const char* shaderSource, GLenum type);
 };

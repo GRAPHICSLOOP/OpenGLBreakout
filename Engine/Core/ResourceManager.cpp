@@ -20,7 +20,7 @@ void ResourceManager::Clear()
 	shaders.clear();
 }
 
-Texture2D* ResourceManager::LoadTexture(std::string textureName, const std::string& texturePath, bool flipImage)
+Texture2D* ResourceManager::LoadTexture(const char* textureName, const char* texturePath, bool flipImage)
 {
 	Texture2D* texture2D = GetTexture(textureName);
 	if (texture2D != nullptr)
@@ -31,7 +31,7 @@ Texture2D* ResourceManager::LoadTexture(std::string textureName, const std::stri
 
 	// 1.从文件中加载贴图数据
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
 	if (data == NULL)
 	{
 		std::cout << "ERROR::LOADTEXTURE::Failed to load texture" << std::endl;
@@ -41,31 +41,26 @@ Texture2D* ResourceManager::LoadTexture(std::string textureName, const std::stri
 
 	// 2.创建纹理
 	texture2D = new Texture2D();
-	texture2D->Generate(width, height, data);
-	textures.insert(std::pair<std::string,class Texture2D*>(textureName, texture2D));
+	texture2D->Generate(width, height, GL_RGBA, nrChannels > 3 ? GL_RGBA : GL_RGB, data);
+	textures[textureName] = texture2D;
 
 	stbi_image_free(data);
 	return texture2D;
 }
 
 
-ShaderManager* ResourceManager::LoadShader(const std::string shaderName, const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath)
+ShaderManager* ResourceManager::LoadShader(const char* shaderName, const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 {
 	ShaderManager* shader = GetShader(shaderName);
 	if (shader != nullptr)
 		return shader;
 
-	const char* vsSource = LoadShaderDataFromFile(vertexPath);
-	const char* fsSource = LoadShaderDataFromFile(fragmentPath);
-	const char* geSource = LoadShaderDataFromFile(geometryPath);
-
-	// 2.创建shader
-	shader = new ShaderManager(vsSource, fsSource, geSource);
-	shaders.insert(std::pair<std::string,class ShaderManager*>(shaderName, shader));
+	shader = LoadShaderDataFromFile(vertexPath, fragmentPath, geometryPath);
+	shaders[shaderName] = shader;
 	return shader;
 }
 
-Texture2D* ResourceManager::GetTexture(const std::string textureName)
+Texture2D* ResourceManager::GetTexture(const char* textureName)
 {
 	auto it = textures.find(textureName);
 	if (it != textures.end())
@@ -76,7 +71,7 @@ Texture2D* ResourceManager::GetTexture(const std::string textureName)
 	return nullptr;
 }
 
-ShaderManager* ResourceManager::GetShader(const std::string shaderName)
+ShaderManager* ResourceManager::GetShader(const char* shaderName)
 {
 	auto it = shaders.find(shaderName);
 	if (it != shaders.end())
@@ -87,32 +82,48 @@ ShaderManager* ResourceManager::GetShader(const std::string shaderName)
 	return nullptr;
 }
 
-const char* ResourceManager::LoadShaderDataFromFile(const std::string& filePath)
+ShaderManager* ResourceManager::LoadShaderDataFromFile(const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 {
 	// 1.从文件路径中获取 vertex/fragment shader
-	std::string shaderCode;
-	std::ifstream shaderFile;
-
-	// 抛出异常
-	shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	std::string vsShaderCode;
+	std::string fsShaderCode;
+	std::string geShaderCode;
 
 	try
 	{
 		// 打开文件
-		shaderFile.open(filePath);
+		std::ifstream vertexShaderFile(vertexPath);
+		std::ifstream fragmentShaderFile(fragmentPath);
+		std::stringstream vShaderStream, fShaderStream;
+		
+		// 读取文件buffer
+		vShaderStream << vertexShaderFile.rdbuf();
+		fShaderStream << fragmentShaderFile.rdbuf();
 
-		std::stringstream shaderStream;
-		// 读取文件内容到数据流中
-		shaderStream << shaderFile.rdbuf();
+		// 读取完成后关闭
+		vertexShaderFile.close();
+		fragmentShaderFile.close();
 
-		// 转换为string
-		shaderCode = shaderStream.str();
+		// 转换到string
+		vsShaderCode = vShaderStream.str();
+		fsShaderCode = fShaderStream.str();
 
+		// 如果有geShader 那么读取
+		if (geometryPath != nullptr)
+		{
+			std::ifstream geometryShaderFile(geometryPath);
+			std::stringstream gShaderStream;
+			gShaderStream << geometryShaderFile.rdbuf();
+			geometryShaderFile.close();
+			geShaderCode = gShaderStream.str();
+		}
 	}
-	catch (std::ifstream::failure e)
+	catch (std::exception e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
 	}
 
-	return shaderCode.c_str();
+	// 2.创建shader
+	ShaderManager* shader = new ShaderManager(vsShaderCode.c_str(), fsShaderCode.c_str(), geometryPath != nullptr ? geShaderCode.c_str() : nullptr);
+	return shader;
 }

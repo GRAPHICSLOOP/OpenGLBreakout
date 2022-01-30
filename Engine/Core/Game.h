@@ -1,28 +1,45 @@
 ﻿#pragma once
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include "../Render/Sprite.h"
+#include "ResourceManager.h"
+
 
 class Game
 {
 public:
 	GLuint screenWidth, screenHeight;
+	Sprite* spriteObj;
 
 public:
 
 	Game(GLuint width,GLuint height);
 	~Game();
 
-	// 初始化
-	// -----------------------------------------------
+	/**
+	 * 初始化.
+	 * 
+	 */
 	void Init();
 
-	// 游戏循环
-	// -----------------------------------------------
-	void ProcessInput(GLfloat deltaTime); // 玩家输入
+	/**
+	 * 玩家输入.
+	 * 
+	 * \param deltaTime
+	 */
+	void ProcessInput(GLfloat deltaTime);
 
-	void Update(GLfloat detalTime); // 逻辑循环
+	/**
+	 * 逻辑循环.
+	 * 
+	 * \param detalTime
+	 */
+	void Update(GLfloat detalTime);
 
-	// 渲染循环
-	// -----------------------------------------------
-	void Render(); // 渲染循环
+	/**
+	 * 渲染循环.
+	 * 
+	 */
+	void Render();
 };
 

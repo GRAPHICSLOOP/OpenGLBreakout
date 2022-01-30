@@ -19,15 +19,23 @@ Texture2D::~Texture2D()
 	glDeleteTextures(1, &ID);
 }
 
-void Texture2D::Bind() const
+void Texture2D::Bind(GLuint index)
+{
+	glActiveTexture(GL_TEXTURE0 + index);
+	glBindTexture(GL_TEXTURE_2D, ID);
+}
+
+void Texture2D::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, ID);
 }
 
-void Texture2D::Generate(GLuint width, GLuint height, unsigned char* data)
+void Texture2D::Generate(GLuint width, GLuint height,GLuint internalFormat, GLuint imageFormat,unsigned char* data)
 {
 	this->width = width;
 	this->height = height;
+	this->internal_Format = internalFormat;
+	this->image_Format = imageFormat;
 
 	// 设置缓冲数据
 	Bind();

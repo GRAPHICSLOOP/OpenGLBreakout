@@ -13,16 +13,18 @@
 class ResourceManager
 {
 public:
-	static std::map<std::string,class Texture2D*> textures;
-	static std::map<std::string,class ShaderManager*> shaders;
+	static std::map<std::string ,class Texture2D*> textures;
+	static std::map<std::string ,class ShaderManager*> shaders;
 
 public:
 	static void Clear();
-	static Texture2D* LoadTexture(std::string textureName, const std::string& texturePath, bool flipImage =false);
-	static ShaderManager* LoadShader(const std::string shaderName, const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath);
-	static Texture2D* GetTexture(const std::string textureName);
-	static ShaderManager* GetShader(const std::string shaderName);
+
+	static Texture2D* LoadTexture(const char* textureName, const char* texturePath, bool flipImage =false);
+	static ShaderManager* LoadShader(const char* shaderName, const char* vertexPath, const char* fragmentPath, const char* geometryPath);
+	static Texture2D* GetTexture(const char* textureName);
+	static ShaderManager* GetShader(const char* shaderName);
 private:
-	static const char* LoadShaderDataFromFile(const std::string& filePath);
+
+	static ShaderManager* LoadShaderDataFromFile(const char* vertexPath, const char* fragmentPath, const char* geometryPath);
 };
 
