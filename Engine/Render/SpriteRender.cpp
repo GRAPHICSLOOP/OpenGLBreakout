@@ -1,16 +1,9 @@
 ﻿#include "SpriteRender.h"
 
-SpriteRender::SpriteRender(ShaderManager* shader)
-{
-    this->shader = shader;
-    InitRenderData();
-}
-
 SpriteRender::SpriteRender()
 {
     quadVAO = 0;
     shader = nullptr;
-    InitRenderData();
 }
 
 SpriteRender::~SpriteRender()
@@ -41,8 +34,11 @@ void SpriteRender::Draw(Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::
 
 }
 
-void SpriteRender::InitRenderData()
+void SpriteRender::Init(ShaderManager* shader)
 {
+    // 赋值shader
+    this->shader = shader;
+
     GLfloat vertices[] = {
         // Pos      // Tex
         0.0f, 1.0f, 0.0f, 1.0f,

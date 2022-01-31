@@ -8,6 +8,7 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+Game breakOut(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 // 初始化窗口
 GLFWwindow* InitWindow(int width, int height);
@@ -15,7 +16,8 @@ GLFWwindow* InitWindow(int width, int height);
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 // 回调-鼠标位置改动
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
-
+// 回调-按键改动
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main()
 {
@@ -30,15 +32,16 @@ int main()
 
 	// 初始化
 	// -----------------------------------------------
-	Game breakOut(SCREEN_WIDTH, SCREEN_HEIGHT);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	breakOut.Init();
 	glDisable(GL_DEPTH); // 该游戏不需要深度
 
 	// 游戏循环
 	// -----------------------------------------------
 	while (!glfwWindowShouldClose(window))
 	{
+		// 检查各种回调事件，鼠标键盘输入等
+		glfwPollEvents();
+
 		// 计算时间
 		deltaTime = (GLfloat)glfwGetTime() - lastTime;
 		lastTime = (GLfloat)glfwGetTime();
@@ -95,6 +98,9 @@ GLFWwindow* InitWindow(int width, int height)
 	// 绑定鼠标移动
 	glfwSetCursorPosCallback(window, CursorPosCallback);
 
+	// 绑定按键
+	glfwSetKeyCallback(window, KeyCallback);
+
 	// 设置是否显示鼠标
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
@@ -113,6 +119,17 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 
+}
+
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window,true);
+
+	if (action == GLFW_PRESS)
+		breakOut.key[key] = true;
+	else if (action == GLFW_RELEASE)
+		breakOut.key[key] = false;
 }
 
 

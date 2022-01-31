@@ -13,7 +13,6 @@ public:
 	ShaderManager* shader;
 
 public:
-	SpriteRender(ShaderManager* shader);
 	SpriteRender();
 	~SpriteRender();
 	/** 
@@ -27,7 +26,8 @@ public:
 	 * \param color 
 	 */
 	void Draw(Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::vec2 size, glm::vec4 color);
-private:
-	void InitRenderData();
+
+	// 初始化
+	void Init(ShaderManager* shader);
 };
 
