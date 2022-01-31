@@ -34,6 +34,8 @@ void Game::Init()
 	// 初始化玩家
 	play.Init(glm::vec2(0.f, screenHeight - 20.f), ResourceManager::LoadTexture("Paddle", "./Resources/paddle.png"));
 
+	// 初始化球
+	ballObj.Init(glm::vec2(play.obj->size.x / 2.f - 10.f, screenHeight - 40.f), 10.f, glm::vec4(1.f), ResourceManager::LoadTexture("Awesomeface", "./Resources/awesomeface.png"));
 
 	// 设置渲染状态
 	glEnable(GL_BLEND);
@@ -45,17 +47,27 @@ void Game::ProcessInput(GLfloat deltaTime)
 	if (key[GLFW_KEY_A])
 	{
 		play.obj->pos.x = glm::clamp(play.obj->pos.x - deltaTime * play.velocity,0.f, (GLfloat)screenWidth);
+
+		if (ballObj.stuck)
+			ballObj.pos.x = glm::clamp(ballObj.pos.x - deltaTime * play.velocity, 0.f, (GLfloat)screenWidth);
 	}
 	
 	if (key[GLFW_KEY_D])
 	{
 		play.obj->pos.x = glm::clamp(play.obj->pos.x + deltaTime * play.velocity, 0.f, (GLfloat)screenWidth - play.obj->size.x);
+		if (ballObj.stuck)
+			ballObj.pos.x = glm::clamp(ballObj.pos.x + deltaTime * play.velocity, 0.f, (GLfloat)screenWidth);
+	}
+
+	if (key[GLFW_KEY_SPACE])
+	{
+		ballObj.stuck = false;
 	}
 }
 
 void Game::Update(GLfloat detalTime)
 {
-
+	ballObj.Move(detalTime, screenWidth);
 }
 
 void Game::Render()
@@ -64,4 +76,5 @@ void Game::Render()
 	spriteRender.Draw(texture, 0.f, glm::vec2(0.f), glm::vec2(screenWidth, screenHeight), glm::vec4(1.f));
 	levels[level].DrawLevel(spriteRender);
 	play.obj->DrawCall(spriteRender);
+	ballObj.DrawCall(spriteRender);
 }

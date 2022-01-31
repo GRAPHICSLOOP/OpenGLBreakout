@@ -1,6 +1,16 @@
 ﻿#include "GameObject.h"
 
+GameObject::GameObject()
+{
+
+}
+
 GameObject::GameObject(glm::vec2 pos, glm::vec2 size, glm::vec4 color, Texture2D* texture)
+{
+	Init(pos, size, color, texture);
+}
+
+void GameObject::Init(glm::vec2 pos, glm::vec2 size, glm::vec4 color, Texture2D* texture)
 {
 	this->pos = pos;
 	this->size = size;

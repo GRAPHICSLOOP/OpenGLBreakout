@@ -5,13 +5,15 @@
 #include "../Render/SpriteRender.h"
 #include "ResourceManager.h"
 #include "GameLevel.h"
+#include "BallObject.h"
 
 struct Player
 {
 	void Init(glm::vec2 pos,Texture2D* texture)
 	{
 		velocity = 400.f;
-		obj = new GameObject(pos, glm::vec2(100.f, 20.f),glm::vec4(1.f), texture);
+		obj = new GameObject();
+		obj->Init(pos, glm::vec2(100.f, 20.f), glm::vec4(1.f), texture);
 	}
 
 	~Player()
@@ -28,10 +30,11 @@ class Game
 public:
 	GLuint screenWidth, screenHeight;
 	GLboolean key[1024];
-	std::vector<GameLevel> levels;
-	GLuint level;
-	SpriteRender spriteRender;
-	Player play;
+	std::vector<GameLevel> levels; // 关卡集合
+	GLuint level; // 当前关卡
+	SpriteRender spriteRender; // 渲染器
+	Player play; // 玩家
+	BallObject ballObj; // 球
 
 public:
 
