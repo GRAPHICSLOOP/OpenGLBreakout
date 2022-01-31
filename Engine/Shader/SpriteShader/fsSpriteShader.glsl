@@ -9,5 +9,4 @@ uniform vec4 spriteColor;
 void main()
 {           
     FragColor = texture(spriteTexture,texCoords) * spriteColor;
-    //FragColor = spriteColor;
 }

@@ -1,7 +1,15 @@
 ﻿#include "SpriteRender.h"
 
+SpriteRender::SpriteRender(ShaderManager* shader)
+{
+    this->shader = shader;
+    InitRenderData();
+}
+
 SpriteRender::SpriteRender()
 {
+    quadVAO = 0;
+    shader = nullptr;
     InitRenderData();
 }
 
@@ -10,7 +18,7 @@ SpriteRender::~SpriteRender()
     glDeleteVertexArrays(1,&quadVAO);
 }
 
-void SpriteRender::Draw(ShaderManager* shader, Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+void SpriteRender::Draw(Texture2D* texture, GLfloat rotate, glm::vec2 pos, glm::vec2 size, glm::vec4 color)
 {
     shader->use();
 
@@ -30,6 +38,7 @@ void SpriteRender::Draw(ShaderManager* shader, Texture2D* texture, GLfloat rotat
 
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
 }
 
 void SpriteRender::InitRenderData()
@@ -57,5 +66,5 @@ void SpriteRender::InitRenderData()
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
     glBindVertexArray(0);
     
-    
+
 }

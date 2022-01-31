@@ -123,6 +123,7 @@ ShaderManager* ResourceManager::LoadShaderDataFromFile(const char* vertexPath, c
 			geometryShaderFile.close();
 			geShaderCode = gShaderStream.str();
 		}
+
 	}
 	catch (std::exception e)
 	{

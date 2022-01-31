@@ -8,6 +8,9 @@ GLuint PrintError_(GLuint errorType, const char* errorContent, const char* file,
 #define COMMONTOOL
 
 #define ET_READFILE 0x001
+#define ET_SHADERPROGRAM 0x002
+#define ET_SHADER 0x003
+
 
 #define PrintError(errorType,errorContent) PrintError_(errorType,errorContent,__FILE__,__LINE__)
 

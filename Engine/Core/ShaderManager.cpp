@@ -25,7 +25,7 @@ ShaderManager::ShaderManager(const char* vertexSource, const char* fragmentSourc
 	if (!success)
 	{
 		glGetProgramInfoLog(ID, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		PrintError(ET_SHADERPROGRAM, "linking failed!");
 	}
 
 	// 删除shader，它们以及链接到程序中，因此不在需要
@@ -112,7 +112,7 @@ GLuint ShaderManager::CompileShader(const char* shaderSource, GLenum type)
 		}
 
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::" << shaderName << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+		PrintError(ET_SHADER, "Compile failed.");
 	}
 
 	return shader;

@@ -38,7 +38,7 @@ void Texture2D::Generate(GLuint width, GLuint height,GLuint internalFormat, GLui
 	this->image_Format = imageFormat;
 
 	// 设置缓冲数据
-	Bind();
+	Bind(0);
 	glTexImage2D(GL_TEXTURE_2D, 0, internal_Format, width, height, 0, image_Format, GL_UNSIGNED_BYTE, data);
 
 	// 设置缓冲属性
@@ -47,7 +47,7 @@ void Texture2D::Generate(GLuint width, GLuint height,GLuint internalFormat, GLui
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter_Min);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter_Max);
 
-	// 接触绑定
+	// 解除绑定
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

@@ -5,7 +5,6 @@ Game::Game(GLuint width, GLuint height)
 {
 	screenHeight = height;
 	screenWidth = width;
-
 	Init();
 }
 
@@ -16,13 +15,15 @@ Game::~Game()
 
 void Game::Init()
 {
-	
-	ShaderManager* shader = ResourceManager::LoadShader("SpriteShader", "./Engine/Shader/SpriteShader/vsSpriteShader.glsl", "./Engine/Shader/SpriteShader/fsSpriteShader.glsl", nullptr);
-	ResourceManager::LoadTexture("Awesomeface", "./Resources/awesomeface.png", true);
+	if (!level.LoadLevel("./Resources/level/level_1.txt", screenWidth, screenHeight * 0.5))
+		return;
 
-	glm::mat4 projection = glm::ortho(0.0f, (GLfloat)screenWidth, 0.0f, (GLfloat)screenHeight,-1.f,1.f);
+	ShaderManager* shader = ResourceManager::LoadShader("SpriteShader", "./Engine/Shader/SpriteShader/vsSpriteShader.glsl", "./Engine/Shader/SpriteShader/fsSpriteShader.glsl", nullptr);
+	glm::mat4 projection = glm::ortho(0.0f, (GLfloat)screenWidth, (GLfloat)screenHeight, 0.0f, -1.f, 1.f);
 	shader->use();
 	shader->SetMatrix("projectionMatrix", projection);
+	spriteRender.shader = shader;
+	
 }
 
 void Game::ProcessInput(GLfloat deltaTime)
@@ -37,5 +38,5 @@ void Game::Update(GLfloat detalTime)
 
 void Game::Render()
 {
-	SpriteRender.Draw(ResourceManager::GetShader("SpriteShader"), ResourceManager::GetTexture("Awesomeface"), 0.f, glm::vec2(100.f), glm::vec2(100.f), glm::vec4(1.f));
+	level.DrawLevel(spriteRender);
 }

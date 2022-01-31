@@ -3,13 +3,14 @@
 #include <glm/glm.hpp>
 #include "../Render/SpriteRender.h"
 #include "ResourceManager.h"
-
+#include "GameLevel.h"
 
 class Game
 {
 public:
 	GLuint screenWidth, screenHeight;
-	SpriteRender SpriteRender;
+	GameLevel level;
+	SpriteRender spriteRender;
 
 public:
 
