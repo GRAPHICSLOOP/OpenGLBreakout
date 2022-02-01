@@ -66,5 +66,19 @@ public:
 	 * 
 	 */
 	void Render();
+
+	/**
+	 * AABB碰撞检查.
+	 * 
+	 * \param one 第一个物体
+	 * \param two 第二个物体
+	 */
+	bool CheckCollision(GameObject* one, GameObject* two);
+
+	/**
+	 * 场景物体碰撞检测.
+	 * 
+	 */
+	void DoCollisionCheck();
 };
 

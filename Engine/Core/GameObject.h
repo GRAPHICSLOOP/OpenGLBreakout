@@ -8,6 +8,8 @@
 class GameObject
 {
 public:
+
+	GLboolean destroyed;// 是否被销毁了
 	glm::vec2 pos;
 	glm::vec2 size;
 	glm::vec4 color;

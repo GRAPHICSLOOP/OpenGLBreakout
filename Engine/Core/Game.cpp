@@ -56,7 +56,7 @@ void Game::ProcessInput(GLfloat deltaTime)
 	{
 		play.obj->pos.x = glm::clamp(play.obj->pos.x + deltaTime * play.velocity, 0.f, (GLfloat)screenWidth - play.obj->size.x);
 		if (ballObj.stuck)
-			ballObj.pos.x = glm::clamp(ballObj.pos.x + deltaTime * play.velocity, 0.f, (GLfloat)screenWidth);
+			ballObj.pos.x = glm::clamp(ballObj.pos.x + deltaTime * play.velocity, 0.f, (GLfloat)screenWidth - ballObj.size.x);
 	}
 
 	if (key[GLFW_KEY_SPACE])
@@ -68,6 +68,7 @@ void Game::ProcessInput(GLfloat deltaTime)
 void Game::Update(GLfloat detalTime)
 {
 	ballObj.Move(detalTime, screenWidth);
+	DoCollisionCheck();
 }
 
 void Game::Render()
@@ -77,4 +78,42 @@ void Game::Render()
 	levels[level].DrawLevel(spriteRender);
 	play.obj->DrawCall(spriteRender);
 	ballObj.DrawCall(spriteRender);
+}
+
+bool Game::CheckCollision(GameObject* one, GameObject* two)
+{
+	// 比较不精确的碰撞检测
+	/*GLboolean xCollision = one->pos.x + one->size.x >= two->pos.x && two->pos.x + two->size.x >= one->pos.x;
+	GLboolean yCollision = one->pos.y + one->size.y >= two->pos.y && two->pos.y + two->size.y >= one->pos.y;
+
+	return xCollision && yCollision;*/
+
+	// 1.获取球中心点和box的边长和中心点
+	// --------------------------------------------
+	glm::vec2 center = one->pos + (one->size / 2.f);
+	glm::vec2 aabb_half_extents = two->size / 2.f;
+	glm::vec2 aabb_center = two->pos + aabb_half_extents;
+
+	// 2.计算出球落在box的最近交点
+	// --------------------------------------------
+
+	glm::vec2 dif = center - aabb_center; // 球心和box心的向量
+	glm::vec2 clamped = glm::clamp(dif, -aabb_half_extents, aabb_half_extents); // clamp的作用，我们只关心落在box内的点，因此将落在外面的统统去掉，减小多余的判断
+	glm::vec2 closest = aabb_center + clamped; // 获取最近点
+	dif = closest - center; // 获取球心到最近点的向量
+	return glm::length(dif) < (one->size.x / 2.f); // 若最近点向量的长度小于球半径 那么说明球已经在box内了
+}
+
+void Game::DoCollisionCheck()
+{
+	for (GameObject& it : levels[level].bricks)
+	{
+		if (it.destroyed)
+			continue;
+
+		if (CheckCollision(&ballObj, &it))
+		{
+			it.destroyed = true;
+		}
+	}
 }
