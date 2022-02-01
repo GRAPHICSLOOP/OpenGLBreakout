@@ -99,6 +99,9 @@ public:
 	 * \return 方向
 	 */
 	Direction CheckVectionDirection(glm::vec2 target);
+
+	void ResetLevel();
+	void ResetPlay();
 };
 
 

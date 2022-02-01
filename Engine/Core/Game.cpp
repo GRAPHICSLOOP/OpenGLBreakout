@@ -69,6 +69,12 @@ void Game::Update(GLfloat detalTime)
 {
 	ballObj.Move(detalTime, (GLfloat)screenWidth);
 	DoCollisionCheck();
+
+	if (ballObj.pos.y > screenHeight)
+	{
+		ResetLevel();
+		ResetPlay();
+	}
 }
 
 void Game::Render()
@@ -185,4 +191,35 @@ Direction Game::CheckVectionDirection(glm::vec2 target)
 	}
 	
 	return (Direction)result;
+}
+
+void Game::ResetLevel()
+{
+	GameLevel resetLevel;
+	switch (level)
+	{
+	case 0:
+		levels[0].LoadLevel("./Resources/levels/one.txt", (GLfloat)screenWidth, (GLfloat)screenHeight * 0.5f);
+		break;
+	case 1:
+		levels[1].LoadLevel("./Resources/levels/two.txt", (GLfloat)screenWidth, (GLfloat)screenHeight * 0.5f);
+		break;
+	case 2:
+		levels[2].LoadLevel("./Resources/levels/three.txt", (GLfloat)screenWidth, (GLfloat)screenHeight * 0.5f);
+		break;
+	case 3:
+		levels[3].LoadLevel("./Resources/levels/four.txt", (GLfloat)screenWidth, (GLfloat)screenHeight * 0.5f);
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::ResetPlay()
+{
+	// 初始化玩家
+	play.Init(glm::vec2(0.f, screenHeight - 20.f), ResourceManager::LoadTexture("Paddle", "./Resources/paddle.png"));
+
+	// 初始化球
+	ballObj.Init(glm::vec2(play.obj->size.x / 2.f - 10.f, screenHeight - 40.f), 10.f, glm::vec4(1.f), ResourceManager::LoadTexture("Awesomeface", "./Resources/awesomeface.png"));
 }
