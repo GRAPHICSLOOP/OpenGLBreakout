@@ -11,14 +11,14 @@ BallObject::BallObject(glm::vec2 pos, GLfloat radius, glm::vec4 color, Texture2D
 {
 	stuck = true;
 	this->radius = radius;
-	this->velocity = glm::vec2(10.f, -35.f);
+	this->velocity = INIT_BALL_VELOCITY;
 }
 
 void BallObject::Init(glm::vec2 pos, GLfloat radius, glm::vec4 color, Texture2D* texture)
 {
 	GameObject::Init(pos, glm::vec2(radius * 2.f), color, texture);
 	this->radius = radius;
-	this->velocity = glm::vec2(10.f, -35.f);
+	this->velocity = INIT_BALL_VELOCITY;
 }
 
 void BallObject::Move(GLfloat detalTime, GLfloat screeenWidth)

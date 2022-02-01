@@ -1,7 +1,11 @@
 ﻿#pragma once
 #include "GameObject.h"
+
+#define INIT_BALL_VELOCITY glm::vec2(100.f, -350.f)
+
 class BallObject : public GameObject
 {
+
 public:
 	GLfloat radius; // 半径
 	glm::vec2 velocity; // 速度

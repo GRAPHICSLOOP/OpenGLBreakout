@@ -25,6 +25,17 @@ struct Player
 	GameObject* obj;
 };
 
+enum class Direction
+{
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT
+};
+
+// 碰撞属性<是否碰撞，碰撞方向，陷入盒子的插值>
+typedef std::tuple<GLboolean, Direction, glm::vec2> Collision;
+
 class Game
 {
 public:
@@ -73,12 +84,22 @@ public:
 	 * \param one 第一个物体
 	 * \param two 第二个物体
 	 */
-	bool CheckCollision(GameObject* one, GameObject* two);
+	Collision CheckCollision(GameObject* one, GameObject* two);
 
 	/**
 	 * 场景物体碰撞检测.
 	 * 
 	 */
 	void DoCollisionCheck();
+
+	/**
+	 * 检查向量方向.
+	 * 
+	 * \param target
+	 * \return 方向
+	 */
+	Direction CheckVectionDirection(glm::vec2 target);
 };
+
+
 

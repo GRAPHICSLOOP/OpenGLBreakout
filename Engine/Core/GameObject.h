@@ -8,7 +8,7 @@
 class GameObject
 {
 public:
-
+	GLboolean isSolid; // 可被销毁的物体
 	GLboolean destroyed;// 是否被销毁了
 	glm::vec2 pos;
 	glm::vec2 size;

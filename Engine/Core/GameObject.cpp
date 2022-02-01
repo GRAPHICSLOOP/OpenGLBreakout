@@ -11,6 +11,7 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 size, glm::vec4 color, Texture2D
 
 void GameObject::Init(glm::vec2 pos, glm::vec2 size, glm::vec4 color, Texture2D* texture)
 {
+	isSolid = true;
 	destroyed = false;
 	this->pos = pos;
 	this->size = size;

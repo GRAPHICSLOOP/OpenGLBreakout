@@ -21,6 +21,7 @@ void GameLevel::Init(std::vector<std::vector<GLuint>>& blockData, GLuint levelWi
 				Texture2D* texture = ResourceManager::LoadTexture("BlockSolid", "./Resources/block_solid.png");
 
 				GameObject obj(pos, size, glm::vec4(1.f), texture);
+				obj.isSolid = false;
 				bricks.push_back(obj);
 			}
 			else if(blockData[y][x] > 1)
@@ -40,13 +41,14 @@ void GameLevel::Init(std::vector<std::vector<GLuint>>& blockData, GLuint levelWi
 				Texture2D* texture = ResourceManager::LoadTexture("Block", "./Resources/block.png");
 
 				GameObject obj(pos, size, color, texture);
+				obj.isSolid = true;
 				bricks.push_back(obj);
 			}
 		}
 	}
 }
 
-bool GameLevel::LoadLevel(const char* path, GLuint levelWidth, GLuint levelHeight)
+bool GameLevel::LoadLevel(const char* path, GLfloat levelWidth, GLfloat levelHeight)
 {
 	
 	GLuint blockCode;

@@ -38,7 +38,7 @@ public:
 	 * \param levelWidth
 	 * \param levelHeight
 	 */
-	bool LoadLevel(const char* path, GLuint levelWidth, GLuint levelHeight);
+	bool LoadLevel(const char* path, GLfloat levelWidth, GLfloat levelHeight);
 
 	/**
 	 * 渲染场景.
