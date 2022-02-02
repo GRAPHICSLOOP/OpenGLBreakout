@@ -6,6 +6,7 @@
 #include "ResourceManager.h"
 #include "GameLevel.h"
 #include "BallObject.h"
+#include "ParticleGenerator.h"
 
 struct Player
 {
@@ -46,7 +47,7 @@ public:
 	SpriteRender spriteRender; // 渲染器
 	Player play; // 玩家
 	BallObject ballObj; // 球
-
+	ParticleGenerator particleGenerator; // 粒子生成器
 public:
 
 	Game(GLuint width,GLuint height);

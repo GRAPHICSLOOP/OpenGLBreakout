@@ -37,6 +37,9 @@ void Game::Init()
 	// 初始化球
 	ballObj.Init(glm::vec2(play.obj->size.x / 2.f - 10.f, screenHeight - 40.f), 10.f, glm::vec4(1.f), ResourceManager::LoadTexture("Awesomeface", "./Resources/awesomeface.png"));
 
+	// 初始化粒子
+	particleGenerator.Init(500, ResourceManager::LoadTexture("Particle", "./Resources/particle.png"));
+
 	// 设置渲染状态
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -75,6 +78,9 @@ void Game::Update(GLfloat detalTime)
 		ResetLevel();
 		ResetPlay();
 	}
+
+	// 更新粒子
+	particleGenerator.Update(detalTime, &ballObj);
 }
 
 void Game::Render()
@@ -83,6 +89,7 @@ void Game::Render()
 	spriteRender.Draw(texture, 0.f, glm::vec2(0.f), glm::vec2(screenWidth, screenHeight), glm::vec4(1.f));
 	levels[level].DrawLevel(spriteRender);
 	play.obj->DrawCall(spriteRender);
+	particleGenerator.DrawCall(&spriteRender);
 	ballObj.DrawCall(spriteRender);
 }
 
