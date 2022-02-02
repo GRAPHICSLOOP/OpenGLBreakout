@@ -25,11 +25,12 @@ void Game::Init()
 	levels.push_back(four);
 	level = 0;
 
-	ShaderManager* shader = ResourceManager::LoadShader("SpriteShader", "./Engine/Shader/SpriteShader/vsSpriteShader.glsl", "./Engine/Shader/SpriteShader/fsSpriteShader.glsl", nullptr);
+	// 创建spriteShader
+	ShaderManager* spriteShader = ResourceManager::LoadShader("SpriteShader", "./Engine/Shader/SpriteShader/vsSpriteShader.glsl", "./Engine/Shader/SpriteShader/fsSpriteShader.glsl", nullptr);
 	glm::mat4 projection = glm::ortho(0.0f, (GLfloat)screenWidth, (GLfloat)screenHeight, 0.0f, -1.f, 1.f);
-	shader->use();
-	shader->SetMatrix("projectionMatrix", projection);
-	spriteRender.Init(shader);
+	spriteShader->use();
+	spriteShader->SetMatrix("projectionMatrix", projection);
+	spriteRender.Init(spriteShader);
 	
 	// 初始化玩家
 	play.Init(glm::vec2(0.f, screenHeight - 20.f), ResourceManager::LoadTexture("Paddle", "./Resources/paddle.png"));
@@ -39,6 +40,12 @@ void Game::Init()
 
 	// 初始化粒子
 	particleGenerator.Init(500, ResourceManager::LoadTexture("Particle", "./Resources/particle.png"));
+
+	// 创建postShader
+	ShaderManager* postShader = ResourceManager::LoadShader("PostShader", "./Engine/Shader/PostProcess/vsPostProcess.glsl", "./Engine/Shader/PostProcess/fsPostProcess.glsl", nullptr);
+
+	// 初始化后期处理
+	postProcessor.Init(postShader, screenWidth, screenHeight);
 
 	// 设置渲染状态
 	glEnable(GL_BLEND);
@@ -81,16 +88,22 @@ void Game::Update(GLfloat detalTime)
 
 	// 更新粒子
 	particleGenerator.Update(detalTime, &ballObj);
+
+	// 更新后期
+	postProcessor.update(detalTime);
 }
 
 void Game::Render()
 {
+	postProcessor.BeginRender();
 	Texture2D* texture = ResourceManager::LoadTexture("Background", "./Resources/background.jpg", true);
 	spriteRender.Draw(texture, 0.f, glm::vec2(0.f), glm::vec2(screenWidth, screenHeight), glm::vec4(1.f));
 	levels[level].DrawLevel(spriteRender);
 	play.obj->DrawCall(spriteRender);
 	particleGenerator.DrawCall(&spriteRender);
 	ballObj.DrawCall(spriteRender);
+	postProcessor.EndRender();
+	postProcessor.Render(glfwGetTime());
 }
 
 Collision Game::CheckCollision(GameObject* one, GameObject* two)
@@ -130,8 +143,15 @@ void Game::DoCollisionCheck()
 		if (std::get<0>(collision))
 		{
 			glm::vec2 dif = glm::abs(std::get<2>(collision));
-			if(it.isSolid)
+			if (it.isSolid)
+			{
 				it.destroyed = true;
+			}
+			else
+			{
+				postProcessor.shakeTime = 0.05f;
+				postProcessor.shake = true;
+			}
 
 			switch (std::get<1>(collision))
 			{
