@@ -8,6 +8,7 @@
 #include "BallObject.h"
 #include "ParticleGenerator.h"
 #include "../Render/PostProcessor.h"
+#include "PowerUpManager.h"
 
 struct Player
 {
@@ -49,7 +50,8 @@ public:
 	Player play; // 玩家
 	BallObject ballObj; // 球
 	ParticleGenerator particleGenerator; // 粒子生成器
-	PostProcessor postProcessor;
+	PostProcessor postProcessor; // 后期处理
+	PowerUpManager powerUpManager; // 道具管理
 public:
 
 	Game(GLuint width,GLuint height);

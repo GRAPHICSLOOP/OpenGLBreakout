@@ -5,12 +5,6 @@ BallObject::BallObject()
 {
 }
 
-BallObject::BallObject(glm::vec2 pos, GLfloat radius, glm::vec4 color, Texture2D* texture)
-	:GameObject(pos,glm::vec2(radius * 2.f),color,texture)
-{
-	this->radius = radius;
-	this->velocity = INIT_BALL_VELOCITY;
-}
 
 void BallObject::Init(glm::vec2 pos, GLfloat radius, glm::vec4 color, Texture2D* texture)
 {
@@ -18,6 +12,8 @@ void BallObject::Init(glm::vec2 pos, GLfloat radius, glm::vec4 color, Texture2D*
 	this->radius = radius;
 	this->velocity = INIT_BALL_VELOCITY;
 	stuck = true;
+	passThrough = false;
+	sticky = false;
 }
 
 void BallObject::Move(GLfloat detalTime, GLfloat screeenWidth)

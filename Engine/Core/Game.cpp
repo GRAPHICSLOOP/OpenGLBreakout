@@ -91,6 +91,9 @@ void Game::Update(GLfloat detalTime)
 
 	// 更新后期
 	postProcessor.update(detalTime);
+
+	// 更新道具
+	powerUpManager.Update(detalTime,&ballObj,play.obj,&postProcessor);
 }
 
 void Game::Render()
@@ -102,6 +105,7 @@ void Game::Render()
 	play.obj->DrawCall(spriteRender);
 	particleGenerator.DrawCall(&spriteRender);
 	ballObj.DrawCall(spriteRender);
+	powerUpManager.Render(spriteRender);
 	postProcessor.EndRender();
 	postProcessor.Render(glfwGetTime());
 }
@@ -153,6 +157,12 @@ void Game::DoCollisionCheck()
 				postProcessor.shake = true;
 			}
 
+			// 生成道具
+			powerUpManager.SpawnPowerUps(it);
+
+			// 若设置了球可穿越
+			if (ballObj.passThrough && it.isSolid)
+				continue;
 			switch (std::get<1>(collision))
 			{
 			case Direction::UP :
@@ -180,19 +190,41 @@ void Game::DoCollisionCheck()
 	}
 
 	// 与玩家检查碰撞
-	Collision collision = CheckCollision(&ballObj, play.obj);
-	if (std::get<0>(collision))
 	{
-		float centerBoard = play.obj->pos.x + (play.obj->size.x / 2.f);
-		float distance = ballObj.pos.x + ballObj.radius - centerBoard;
-		float persent = distance / (play.obj->size.x / 2.f);
+		Collision collision = CheckCollision(&ballObj, play.obj);
+		if (std::get<0>(collision))
+		{
+			if (ballObj.sticky)
+			{
+				ballObj.stuck = ballObj.sticky;
+			}
 
-		// 生成一个新的方向，当时不改变原来力的大小
-		float len = glm::length(ballObj.velocity);
-		glm::vec2 newDirection = ballObj.velocity;
-		newDirection.x = INIT_BALL_VELOCITY.x * persent * 2.f;
-		newDirection.y = - glm::abs(newDirection.y); // 防止卡住
-		ballObj.velocity = glm::normalize(newDirection) * len;
+			float centerBoard = play.obj->pos.x + (play.obj->size.x / 2.f);
+			float distance = ballObj.pos.x + ballObj.radius - centerBoard;
+			float persent = distance / (play.obj->size.x / 2.f);
+
+			// 生成一个新的方向，当时不改变原来力的大小
+			float len = glm::length(ballObj.velocity);
+			glm::vec2 newDirection = ballObj.velocity;
+			newDirection.x = INIT_BALL_VELOCITY.x * persent * 2.f;
+			newDirection.y = -glm::abs(newDirection.y); // 防止卡住
+			ballObj.velocity = glm::normalize(newDirection) * len;
+		}
+	}
+	
+
+	// 道具与玩家碰撞
+	for (PowerUp& it : powerUpManager.powerUps)
+	{
+		if (it.destroyed)
+			continue;
+		Collision collision = CheckCollision(&it, play.obj);
+		if (std::get<0>(collision))
+		{
+			powerUpManager.ActivatePowerUp(&it, &ballObj, play.obj, &postProcessor);
+			it.destroyed = true;
+			it.active = true;
+		}
 	}
 }
 

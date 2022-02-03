@@ -15,7 +15,7 @@ void main()
 
     if(chaos)
     {
-        vec2 pos = vec2(texCoords.x + sin(time),texCoords.y + cos(time)) * 0.3f;
+        vec2 pos = vec2(texCoords.x + sin(time) * 0.3f,texCoords.y + cos(time) * 0.3f) ;
         texCoords = pos;
     }
     else if(confuse)
