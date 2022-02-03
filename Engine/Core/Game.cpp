@@ -47,6 +47,10 @@ void Game::Init()
 	// 初始化后期处理
 	postProcessor.Init(postShader, screenWidth, screenHeight);
 
+	// 初始化音频
+	iSoundEngine = irrklang::createIrrKlangDevice();
+	iSoundEngine->play2D("./Resources/audio/breakout.mp3", true);
+
 	// 设置渲染状态
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

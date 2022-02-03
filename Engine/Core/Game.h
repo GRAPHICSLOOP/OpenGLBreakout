@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <irrKlang/irrKlang.h>
 #include "../Render/SpriteRender.h"
 #include "ResourceManager.h"
 #include "GameLevel.h"
@@ -52,6 +53,7 @@ public:
 	ParticleGenerator particleGenerator; // 粒子生成器
 	PostProcessor postProcessor; // 后期处理
 	PowerUpManager powerUpManager; // 道具管理
+	irrklang::ISoundEngine* iSoundEngine; // 音频
 public:
 
 	Game(GLuint width,GLuint height);
