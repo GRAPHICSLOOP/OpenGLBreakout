@@ -51,6 +51,10 @@ void Game::Init()
 	iSoundEngine = irrklang::createIrrKlangDevice();
 	iSoundEngine->play2D("./Resources/audio/breakout.mp3", true);
 
+	// 初始化文字
+	textRender.Init(screenWidth, screenHeight);
+	textRender.Load("./Resources/Font/arial.ttf", 24);
+
 	// 设置渲染状态
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -111,7 +115,9 @@ void Game::Render()
 	ballObj.DrawCall(spriteRender);
 	powerUpManager.Render(spriteRender);
 	postProcessor.EndRender();
-	postProcessor.Render(glfwGetTime());
+	postProcessor.Render((GLfloat)glfwGetTime());
+
+	textRender.Render("Level:1", 10.f, 10.f);
 }
 
 Collision Game::CheckCollision(GameObject* one, GameObject* two)

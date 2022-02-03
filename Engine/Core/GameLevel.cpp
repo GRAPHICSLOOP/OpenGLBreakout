@@ -77,7 +77,7 @@ bool GameLevel::LoadLevel(const char* path, GLfloat levelWidth, GLfloat levelHei
 	}
 
 	if (blockData.size() > 0)
-		Init(blockData, levelWidth, levelHeight);
+		Init(blockData, (GLuint)levelWidth, (GLuint)levelHeight);
 
 	levelStream.close();
 

@@ -10,6 +10,7 @@
 #include "ParticleGenerator.h"
 #include "../Render/PostProcessor.h"
 #include "PowerUpManager.h"
+#include "../Render/TextRender.h"
 
 struct Player
 {
@@ -54,6 +55,7 @@ public:
 	PostProcessor postProcessor; // 后期处理
 	PowerUpManager powerUpManager; // 道具管理
 	irrklang::ISoundEngine* iSoundEngine; // 音频
+	TextRender textRender; // 文字渲染
 public:
 
 	Game(GLuint width,GLuint height);

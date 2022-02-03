@@ -18,6 +18,8 @@ GLuint PrintError_(GLuint errorType, const char* errorContent, const char* file,
     case ET_FRAMEBUFFER:
         err = "ERROR::FRAMEBUFFER::";
         break;
+    case ET_FREETYPE:
+        err = "ERROR::FREETYPE::";
     default:
         break;
     }

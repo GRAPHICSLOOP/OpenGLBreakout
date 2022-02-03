@@ -67,7 +67,7 @@ void ParticleGenerator::RespwanDeadParticle(GLuint index, BallObject* attachObj)
 {
 	Particle& particle = particles[index];
 	GLfloat random = ((rand() % 100) - 50) / 10.0f;
-	GLfloat rColor = 0.5 + ((rand() % 100) / 100.0f);
+	GLfloat rColor = 0.5f + ((rand() % 100) / 100.0f);
 	particle.pos = attachObj->pos + random;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.life = 1.0f;

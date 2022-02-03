@@ -12,6 +12,7 @@ GLenum glCheckError_(const char* file, int line);
 #define ET_SHADERPROGRAM 0x002
 #define ET_SHADER 0x003
 #define ET_FRAMEBUFFER 0x004
+#define ET_FREETYPE 0x005
 
 #define PrintError(errorType,errorContent) PrintError_(errorType,errorContent,__FILE__,__LINE__)
 #define glCheckError() glCheckError_(__FILE__, __LINE__) 
